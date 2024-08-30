@@ -6,9 +6,11 @@
 int main() {
 
     char *s;
-    s = malloc(10 * sizeof(char));
-    scanf("[^\n]", s);
-    s = realloc(s, strlen(s) + 1);
+    s = malloc(1024 * sizeof(char));
+    scanf("%[^\n]", s);
+    s = realloc(s, strlen(s) );
+    printf("%ld",strlen(s));
+
     for(int i=0;i<strlen(s);i++)
     {
         if(s[i]==' ')
@@ -20,4 +22,3 @@ int main() {
    
     return 0;
 }
-

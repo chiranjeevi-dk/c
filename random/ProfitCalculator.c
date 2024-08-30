@@ -17,5 +17,3 @@ int main(void)
         printf("The profit obtained is Rs.%d\n",result);
 	return 0;
 }
-
-

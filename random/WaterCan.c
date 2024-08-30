@@ -32,4 +32,3 @@ int main() {
     free(indexMap);
     return 0;
 }
-
