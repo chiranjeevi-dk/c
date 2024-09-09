@@ -154,6 +154,7 @@ int main()
     deleteatend(&head_ptr);
     printf("\ndeleted at end :");
     printnode((const node_t *const *)&head_ptr);
-
+    
+    printf("done. ");
     return 0;
 }
