@@ -1,21 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct node {
-    int val;
-    struct node *link;
-} node_t;
-
-typedef struct llist {
-    node_t *head;
-} llist_t;
-
+#include "linkedlist.h"
 
 llist_t *create_llist() {
     llist_t *linkedlist = (llist_t *)malloc(sizeof(llist_t));
     
     if (linkedlist == NULL) {
-        perror("Memory was not allocated.");
+        fprintf(stderr, "Memory for List is not allocated in function: %s\n", __func__);
         return NULL;
     }
 
@@ -144,33 +135,3 @@ void delete_entire_list(llist_t *list){
     free(list);
 }
 
-
-int main() {
-    llist_t *list = create_llist();
-    
-    insert_at_end(&list->head, 10);
-    insert_at_end(&list->head, 20);
-    printf("Initial list: ");
-    print_list(list->head);
-
-    insert_at_front(&list->head, 0);
-    printf("Added at front: ");
-    print_list(list->head);
-
-    reverse_list(&list->head);
-    printf("Reversed list: ");
-    print_list(list->head);
-
-    delete_at_front(&list->head);
-    printf("Deleted at front: ");
-    print_list(list->head);
-
-    delete_at_end(&list->head);
-    printf("Deleted at end: ");
-    print_list(list->head);
-
-    delete_entire_list(list);
-    printf("List has been deleted\n");
-
-    return 0;
-}
