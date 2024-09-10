@@ -44,7 +44,7 @@ void insert_at_front(node_t **head_ptr, int value)
     *head_ptr = node;
 }
 
-void printnode(const node_t *const *head_ptr)
+void print_list(const node_t *const *head_ptr)
 {
 
     if (*head_ptr == NULL)
@@ -63,7 +63,7 @@ void printnode(const node_t *const *head_ptr)
     }
 }
 
-void deleteatfront(node_t **head_ptr)
+void delete_at_front(node_t **head_ptr)
 {
 
     if (*head_ptr == NULL)
@@ -78,7 +78,7 @@ void deleteatfront(node_t **head_ptr)
     }
 }
 
-void deleteatend(node_t **head_ptr)
+void delete_at_end(node_t **head_ptr)
 {
 
     if (*head_ptr == NULL)
@@ -137,24 +137,23 @@ int main()
     insert_at_end(&head_ptr, 10);
     insert_at_end(&head_ptr, 20);
     printf("initial list : ");
-    printnode((const node_t *const *)&head_ptr);
+    print_list((const node_t *const *)&head_ptr);
 
     insert_at_front(&head_ptr, 0);
     printf("\nadded at front : ");
-    printnode((const node_t *const *)&head_ptr);
+    print_list((const node_t *const *)&head_ptr);
 
     reverse_list(&head_ptr);
     printf("\nreversed list :");
-    printnode((const node_t *const *)&head_ptr);
+    print_list((const node_t *const *)&head_ptr);
 
-    deleteatfront(&head_ptr);
+    delete_at_front(&head_ptr);
     printf("\ndeleted at front :");
-    printnode((const node_t *const *)&head_ptr);
+    print_list((const node_t *const *)&head_ptr);
 
-    deleteatend(&head_ptr);
+    delete_at_end(&head_ptr);
     printf("\ndeleted at end :");
-    printnode((const node_t *const *)&head_ptr);
+    print_list((const node_t *const *)&head_ptr);
     
-    printf("done. ");
     return 0;
 }
