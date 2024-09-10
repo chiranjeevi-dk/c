@@ -1,125 +1,126 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node_t
-{
+typedef struct node {
     int val;
-    struct node_t *link;
+    struct node *link;
 } node_t;
 
-void insert_at_end(node_t **head_ptr, int value)
-{
+typedef struct llist {
+    node_t *head;
+} llist_t;
 
-    node_t *node = (node_t *)malloc(sizeof(node_t));
-    node->val = value;
-    node->link = NULL;
 
-    if (*head_ptr == NULL)
-    {
-        *head_ptr = node;
+llist_t *create_llist() {
+    llist_t *linkedlist = (llist_t *)malloc(sizeof(llist_t));
+    
+    if (linkedlist == NULL) {
+        perror("Memory was not allocated.");
+        return NULL;
     }
-    else
-    {
-        node_t *temp = *head_ptr;
 
-        while (temp->link != NULL)
-        {
+    linkedlist->head = NULL;
+    return linkedlist;
+}
+
+node_t *create_node(int value){
+
+    node_t *new_node = (node_t *)malloc(sizeof(node_t));
+
+    if(new_node == NULL){
+        fprintf(stderr, "Node not created in function: %s\n", __func__);
+        return NULL;
+    }
+    new_node->val = value;
+    new_node->link = NULL;
+    
+    return new_node;
+}
+
+void insert_at_end(node_t **head_ptr, int value) {
+    
+    node_t *node = create_node(value);
+    if(node == NULL){
+        fprintf(stderr, "Node not created in function: %s\n", __func__);
+        return; 
+    }
+
+    if (*head_ptr == NULL) {
+        *head_ptr = node;
+    } else {
+        node_t *temp = *head_ptr;
+        while (temp->link != NULL) {
             temp = temp->link;
         }
         temp->link = node;
     }
+
 }
 
-void insert_at_front(node_t **head_ptr, int value)
-{
-
-    if (*head_ptr == NULL)
-    {
-        printf("no elements.");
+void insert_at_front(node_t **head_ptr, int value) {
+  
+    node_t *node = create_node(value);
+    if(node == NULL){
+        fprintf(stderr, "Node not created in function: %s\n", __func__);
+        return; 
     }
 
-    node_t *node = (node_t *)malloc(sizeof(node_t));
-    node->val = value;
     node->link = *head_ptr;
     *head_ptr = node;
+
 }
 
-void print_list(const node_t *const *head_ptr)
-{
+void print_list( node_t *head_ptr) {
 
-    if (*head_ptr == NULL)
-    {
-        printf("no elements in the linked list.");
-    }
-    else
-    {
-        const node_t *temp = *head_ptr;
-        while (temp != NULL)
-        {
-            printf("%d ", temp->val);
+    if (head_ptr == NULL) {
+        printf("no elements in the linked list.\n");
+    } else {
+        node_t *temp = head_ptr;
+        while (temp != NULL) {
+            printf("%d -> ", temp->val);
             temp = temp->link;
         }
-        printf("\n");
+        printf("NULL\n\n");
     }
+
 }
 
-void delete_at_front(node_t **head_ptr)
-{
-
-    if (*head_ptr == NULL)
-    {
-        printf("no elements to delete. ");
-    }
-    else
-    {
+void delete_at_front(node_t **head_ptr) {
+    if (*head_ptr == NULL) {
+        printf("no elements to delete.\n");
+    } else {
         node_t *temp = *head_ptr;
         *head_ptr = (*head_ptr)->link;
         free(temp);
     }
 }
 
-void delete_at_end(node_t **head_ptr)
-{
-
-    if (*head_ptr == NULL)
-    {
-        printf("no elements to delete. ");
-    }
-    else if ((*head_ptr)->link == NULL)
-    {
+void delete_at_end(node_t **head_ptr) {
+    if (*head_ptr == NULL) {
+        printf("no elements to delete.\n");
+    } else if ((*head_ptr)->link == NULL) {
         free(*head_ptr);
         *head_ptr = NULL;
-    }
-    else
-    {
+    } else {
         node_t *temp = *head_ptr;
-
-        while (temp->link->link != NULL)
-        {
+        while (temp->link->link != NULL) {
             temp = temp->link;
         }
-
         node_t *tobedeleted = temp->link;
         temp->link = NULL;
         free(tobedeleted);
     }
 }
 
-void reverse_list(node_t **head_ptr)
-{
-
-    if (*head_ptr == NULL)
-    {
-        printf("no elements in the list");
-    }
-    else
-    {
+void reverse_list(node_t **head_ptr) {
+    if (*head_ptr == NULL) {
+        printf("no elements in the list\n");
+    } else {
         node_t *next_node = NULL;
         node_t *current_node = *head_ptr;
         node_t *previous_node = NULL;
 
-        while (current_node != NULL)
-        {
+        while (current_node != NULL) {
             next_node = current_node->link;
             current_node->link = previous_node;
             previous_node = current_node;       
@@ -129,31 +130,47 @@ void reverse_list(node_t **head_ptr)
     }
 }
 
-int main()
-{
+void delete_entire_list(llist_t *list){
 
-    node_t *head_ptr = NULL;
-   
-    insert_at_end(&head_ptr, 10);
-    insert_at_end(&head_ptr, 20);
-    printf("initial list : ");
-    print_list((const node_t *const *)&head_ptr);
+    if(list == NULL){
+        perror("List is empty.");
+        return;
+    }
 
-    insert_at_front(&head_ptr, 0);
-    printf("\nadded at front : ");
-    print_list((const node_t *const *)&head_ptr);
+    while(list->head != NULL){
+        delete_at_front(&list->head);
+    }
 
-    reverse_list(&head_ptr);
-    printf("\nreversed list :");
-    print_list((const node_t *const *)&head_ptr);
+    free(list);
+}
 
-    delete_at_front(&head_ptr);
-    printf("\ndeleted at front :");
-    print_list((const node_t *const *)&head_ptr);
 
-    delete_at_end(&head_ptr);
-    printf("\ndeleted at end :");
-    print_list((const node_t *const *)&head_ptr);
+int main() {
+    llist_t *list = create_llist();
     
+    insert_at_end(&list->head, 10);
+    insert_at_end(&list->head, 20);
+    printf("Initial list: ");
+    print_list(list->head);
+
+    insert_at_front(&list->head, 0);
+    printf("Added at front: ");
+    print_list(list->head);
+
+    reverse_list(&list->head);
+    printf("Reversed list: ");
+    print_list(list->head);
+
+    delete_at_front(&list->head);
+    printf("Deleted at front: ");
+    print_list(list->head);
+
+    delete_at_end(&list->head);
+    printf("Deleted at end: ");
+    print_list(list->head);
+
+    delete_entire_list(list);
+    printf("List has been deleted\n");
+
     return 0;
 }
