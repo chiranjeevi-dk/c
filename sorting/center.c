@@ -5,13 +5,13 @@ int compare(const void *a, const void *b){
     int num1 = *(int *)a;
     int num2 = *(int *)b;
 
-    int mid1 , mid2;
+//    int mid1 , mid2;
 
     int numsize = 0;
 
     while(num1!=0){
         if(numsize==3){
-            mid1 = num1%10;
+            num1 = num1%10;
         }
         num1 = num1/10;
         numsize++;
@@ -20,7 +20,7 @@ int compare(const void *a, const void *b){
 
     while(num2!=0){
         if(numsize==3){
-            mid2 = num2%10;
+            num2 = num2%10;
         }
         num2 = num2/10;
         numsize++;
@@ -29,10 +29,14 @@ int compare(const void *a, const void *b){
 }
 
 void center(int *array, int size){
+    
     qsort(array,size,sizeof(int),compare);
+    
+    printf("\nThe Sorted array :\n");
     for(int i =0; i < size;i++){
-        printf("%d ",array[i]);
+        printf("Element at Index %d is :%d\n",i,array[i]);
     }
+    printf("\n");
 }
 
 int main(){
@@ -43,7 +47,7 @@ int main(){
 
     int *array = (int *)malloc( size * sizeof(int));
 
-    printf("Enter the elements : ");
+    printf("Enter the elements : \n");
     
     for(int i = 0; i < size ; i++){
         scanf("%d",&array[i]);
