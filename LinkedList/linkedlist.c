@@ -28,6 +28,21 @@ node_t *create_node(int value){
     return new_node;
 }
 
+void print_list( node_t *head_ptr) {
+
+    if (head_ptr == NULL) {
+        printf("no elements in the linked list.\n");
+    } else {
+        node_t *temp = head_ptr;
+        while (temp != NULL) {
+            printf("%d -> ", temp->val);
+            temp = temp->link;
+        }
+        printf("NULL\n\n");
+    }
+
+}
+
 void insert_at_end(node_t **head_ptr, int value) {
     
     node_t *node = create_node(value);
@@ -46,6 +61,9 @@ void insert_at_end(node_t **head_ptr, int value) {
         temp->link = node;
     }
 
+    printf("\nThe Linkedlist after insertion is :\n");
+    print_list(*head_ptr);
+
 }
 
 void insert_at_front(node_t **head_ptr, int value) {
@@ -59,24 +77,14 @@ void insert_at_front(node_t **head_ptr, int value) {
     node->link = *head_ptr;
     *head_ptr = node;
 
-}
-
-void print_list( node_t *head_ptr) {
-
-    if (head_ptr == NULL) {
-        printf("no elements in the linked list.\n");
-    } else {
-        node_t *temp = head_ptr;
-        while (temp != NULL) {
-            printf("%d -> ", temp->val);
-            temp = temp->link;
-        }
-        printf("NULL\n\n");
-    }
+    printf("\nThe Linkedlist after insertion is :\n");
+    print_list(*head_ptr);
 
 }
+
 
 void delete_at_front(node_t **head_ptr) {
+
     if (*head_ptr == NULL) {
         printf("no elements to delete.\n");
     } else {
@@ -84,6 +92,9 @@ void delete_at_front(node_t **head_ptr) {
         *head_ptr = (*head_ptr)->link;
         free(temp);
     }
+
+    printf("\nThe Linkedlist after deletion is :\n");
+    print_list(*head_ptr);
 }
 
 void delete_at_end(node_t **head_ptr) {
@@ -101,9 +112,14 @@ void delete_at_end(node_t **head_ptr) {
         temp->link = NULL;
         free(tobedeleted);
     }
+
+    printf("\nThe Linkedlist after deletion is :\n");
+    print_list(*head_ptr);
+
 }
 
 void reverse_list(node_t **head_ptr) {
+
     if (*head_ptr == NULL) {
         printf("no elements in the list\n");
     } else {
@@ -119,6 +135,10 @@ void reverse_list(node_t **head_ptr) {
         }
         *head_ptr = previous_node;
     }
+
+    printf("\nThe Linkedlist after reversing is :\n");
+    print_list(*head_ptr);
+
 }
 
 void delete_entire_list(llist_t *list){

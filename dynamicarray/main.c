@@ -225,6 +225,7 @@ int main() {
             }
             break;
         default:
+            fprintf(stderr, "Invalid option. Please try again.\n");
             break;
         }
         printf("\nEnter 1 if you want to proceed else 0 : ");
