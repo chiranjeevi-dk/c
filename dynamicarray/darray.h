@@ -20,19 +20,19 @@ typedef struct darray
     int capacity;
     int size;
     size_t element_size;
-    void (*print_func)(void *element);
+    void (*func_print)(void *element);
 
 }darray_t;
 
-darray_t *create_darray(int initial_capacity, size_t element_size, void (*print_func)(void *element));
-void free_darray(darray_t *darray);
-void insert_darray(darray_t *darray, void *element);
-void insert_at_darray(darray_t *darray, void *element, int position);
-void print_int(void *element);
-void print_float(void *element);
-void print_double(void *element);
-void print_char(void *element);
-void print_string(void *element);
-void print_darray(darray_t *darray);
+darray_t *darray_create(int initial_capacity, size_t element_size, void (*func)(void *element));
+void darray_free(darray_t *darray);
+void darray_append(darray_t *darray, void *element);
+void darray_insert_at(darray_t *darray, void *element, int position);
+void int_print(void *element);
+void float_print(void *element);
+void double_print(void *element);
+void char_print(void *element);
+void string_print(void *element);
+void darray_print(darray_t *darray);
 
 #endif
