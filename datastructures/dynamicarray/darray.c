@@ -35,6 +35,65 @@ void darray_free(darray_t *darray){
     }
 }
 
+void int_print(void *element){
+    printf("%d ",*(int *)element);    
+}
+
+void float_print(void *element){
+    printf("%f ",*(float *)element);    
+}
+
+void double_print(void *element){
+    printf("%lf ",*(double *)element);    
+}
+
+void char_print(void *element){
+    printf("%c ",*(char *)element);    
+}
+
+void string_print(void *element){
+    printf("%s ",*(char **)element);    
+}
+
+void darray_print(darray_t *darray){
+
+    if(darray == NULL || darray->data == NULL){
+        fprintf(stderr, "Error : Dynamic Array not initialized.");
+        return;
+    }
+
+    printf("Dynamic array is :\n");
+    
+    for(int i=0; i<darray->size; i++){
+        void *element =(char *)darray->data + (i * darray->element_size);
+        darray->func_print(element);
+    }
+
+    printf("\n");
+
+}
+
+int ret_datatype(darray_t *darray){
+
+    int datatype = 0;
+
+    if(darray->func_print == int_print){
+        datatype = 1;
+    }else if(darray->func_print == float_print){
+        datatype = 2;
+    }else if(darray->func_print == double_print){
+        datatype = 3;
+    }else if(darray->func_print == char_print){
+        datatype = 4;
+    }else if(darray->func_print == string_print){
+        datatype = 5;
+    }else{
+        fprintf(stderr,"Error : Couldnt figure out what data type. \n");
+    }
+
+    return datatype;
+}
+
 void darray_append(darray_t *darray, void *element){
 
     if(darray->size == darray->capacity){
@@ -89,40 +148,84 @@ void darray_insert_at(darray_t *darray, void *element, int position){
     printf("\n");
 }
 
-void int_print(void *element){
-    printf("%d ",*(int *)element);    
+int compare(const void *a, const void *b, const int datatype){
+
+    switch(datatype){
+        case 1:
+            if (*(int *)a == *(int *)b)
+                return 0;
+            else
+                return 1;
+            break;
+        case 2:
+            if (*(float *)a == *(float *)b)
+                return 0;
+            else
+                return 1;
+            break;
+        case 3:
+            if (*(double *)a == *(double *)b)
+                return 0;
+            else
+                return 1;
+            break;
+        case 4:
+            if (*(char *)a == *(char *)b)
+                return 0;
+            else
+                return 1;
+            break;
+        case 5:
+            a = *(char **)a;
+            b = *(char **)b;
+            if(strcmp(a,b)==0){           
+                return 0;
+            }else{
+                return 1;
+            }
+            break;
+        default:
+            printf("\nEnter a valid option to append the value.\n");
+            break;
+    }
+
+    return 1;
 }
 
-void float_print(void *element){
-    printf("%f ",*(float *)element);    
-}
+void darray_remove(darray_t *darray, void *element){
 
-void double_print(void *element){
-    printf("%lf ",*(double *)element);    
-}
+    int index = -1;
+    int datatype = ret_datatype(darray);
 
-void char_print(void *element){
-    printf("%c ",*(char *)element);    
-}
+    for(int i = 0; i < darray->size ; i++){
+        void *temp = (char *)darray->data + (i * darray->element_size);
+        int result = compare(element,temp,datatype);
 
-void string_print(void *element){
-    printf("%s ",*(char **)element);    
-}
+        if(result == 0){
+            index = i;
+        }
+    }
 
-void darray_print(darray_t *darray){
-
-    if(darray == NULL || darray->data == NULL){
-        fprintf(stderr, "Error : Dynamic Array not initialized.");
+    if(index == -1){    
+        fprintf(stderr,"Error : Element not found.");
         return;
+    }else if(index == 0){
+        darray_free(darray);
+        printf("\nThe desired Element has been removed.\n");
+        darray_print(darray);
+        printf("\n");
+    }else{
+        void *destination = (char *)darray->data + (index * darray->element_size);
+        void *target =(char *)darray->data + ((index +1 )* darray->element_size);
+        /*
+            Here Memmove is used to shift the elements from the source to destination
+            and it also asks the size being shifted
+        */
+        memmove(destination, target, (darray->size - index-1) * darray->element_size);
     }
-
-    printf("Dynamic array is :\n");
-    
-    for(int i=0; i<darray->size; i++){
-        void *element =(char *)darray->data + (i * darray->element_size);
-        darray->func_print(element);
-    }
-
+    darray->size--;
+    printf("\nThe desired Element has been removed.\n");
+    darray_print(darray);
     printf("\n");
-
 }
+

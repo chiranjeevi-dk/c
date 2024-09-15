@@ -58,27 +58,6 @@ darray_t *create_gen_array(){
     return NULL;
 }
 
-int ret_datatype(darray_t *gen_array){
-
-    int datatype = 0;
-
-    if(gen_array->func_print == int_print){
-        datatype = 1;
-    }else if(gen_array->func_print == float_print){
-        datatype = 2;
-    }else if(gen_array->func_print == double_print){
-        datatype = 3;
-    }else if(gen_array->func_print == char_print){
-        datatype = 4;
-    }else if(gen_array->func_print == string_print){
-        datatype = 5;
-    }else{
-        fprintf(stderr,"Error : Couldnt figure out what data type. \n");
-    }
-
-    return datatype;
-}
-
 void gen_array_append(darray_t *gen_array){
 
     int datatype = ret_datatype(gen_array);
@@ -103,9 +82,10 @@ void gen_array_append(darray_t *gen_array){
             darray_append(gen_array,&d_value);
             break;
         case 4:
-            printf("\nEnter the char value to be appended : ");
             char c_value;
-            scanf("%c",&c_value);
+            printf("\nEnter the char value to be appended : ");
+            //Don't forget to use " %c" leading whitespace before %c to get correct input.
+            scanf(" %c",&c_value);
             darray_append(gen_array,&c_value);
             break;
         case 5:
@@ -152,9 +132,10 @@ void gen_array_insert_at(darray_t *gen_array){
             darray_insert_at(gen_array,&d_value,position);
             break;
         case 4:
-            printf("\nEnter the char value to be appended : ");
             char c_value;
-            scanf("%c",&c_value);
+            printf("\nEnter the char value to be appended : ");
+            //Don't forget to use " %c" leading whitespace before %c to get correct input.
+            scanf(" %c",&c_value);
             printf("\nEnter the position : ");
             scanf("%d",&position);
             darray_insert_at(gen_array,&c_value,position);
@@ -175,7 +156,49 @@ void gen_array_insert_at(darray_t *gen_array){
     }
 }
 
+void gen_array_remove(darray_t *gen_array){
 
+    int datatype = ret_datatype(gen_array);
+
+    switch(datatype){
+        case 1:
+            printf("\nEnter the integer value to be Removed : ");
+            int i_value;
+            scanf("%d",&i_value);
+            darray_remove(gen_array,&i_value);
+            break;
+        case 2:
+            printf("\nEnter the float value  to be Removed : ");
+            float f_value;
+            scanf("%f",&f_value);
+            darray_remove(gen_array,&f_value);
+            break;
+        case 3:
+            printf("\nEnter the double value to be Removed : ");
+            double d_value;
+            scanf("%lf",&d_value);
+            darray_remove(gen_array,&d_value);
+            break;
+        case 4:
+            printf("\nEnter the char value to be Removed : ");
+            char c_value;
+            //Don't forget to use " %c" leading whitespace before %c to get correct input.
+            scanf(" %c",&c_value);
+            darray_remove(gen_array,&c_value);
+            break;
+        case 5:
+            printf("\nEnter the string value to be Removed : ");
+            //char str[100];
+            char *str = malloc(100 * sizeof(char));
+            //fgets(str,100 , stdin)getchar();
+            scanf("%s",str);
+            darray_remove(gen_array,&str);
+            break;
+        default:
+            printf("\nEnter a valid option to append the value.\n");
+            break;
+    }
+}
 
 int main() {
     // Create a dynamic array for integers
@@ -185,8 +208,8 @@ int main() {
     int option;
     while (choice)
     {
-        printf("Enter the following numbers to do\n1)Create an Array,\n2)Free an Array,\n3)Print an Array,\n4)Append in an Array,\n5)Insert at particular Index in an Array.\n");
-        printf("Enter the option : ");
+        printf("Enter the following numbers to do\n1)Create an Array,\n2)Free an Array,\n3)Print an Array,\n4)Append in an Array,\n5)Insert at particular Index in an Array.\n6)Remove an Element\n");
+        printf("\nEnter an option : ");
         scanf("%d",&option);
         switch (option)
         {
@@ -220,6 +243,13 @@ int main() {
         case 5:
             if(gen_array != NULL){
                 gen_array_insert_at(gen_array);
+            }else{
+                fprintf(stderr,"\nError : No array to append.\n");
+            }
+            break;
+        case 6:
+            if(gen_array != NULL){
+                gen_array_remove(gen_array);
             }else{
                 fprintf(stderr,"\nError : No array to append.\n");
             }

@@ -28,6 +28,9 @@ darray_t *darray_create(int initial_capacity, size_t element_size, void (*func)(
 void darray_free(darray_t *darray);
 void darray_append(darray_t *darray, void *element);
 void darray_insert_at(darray_t *darray, void *element, int position);
+void darray_remove(darray_t *darray, void *element);
+int ret_datatype(darray_t *darray);
+int compare(const void *a,const void *b, const int datatype);
 void int_print(void *element);
 void float_print(void *element);
 void double_print(void *element);
