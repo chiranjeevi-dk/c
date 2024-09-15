@@ -1,6 +1,6 @@
 #variables
-CC = gcc  #compiler
-CFLAGS = -Wall -g  #Flags (Wall : shows warnings, g: for debugging)
+CC=gcc	#Compiler
+CFLAGS= -Wall -g	#Flags ( Wall : for warnings , g : for debugging )
 
 #target for final executable
 all : linkedlist
@@ -9,14 +9,14 @@ all : linkedlist
 linkedlist: main.o linkedlist.o
 	$(CC) $(CFLAGS) -o linkedlist main.o linkedlist.o
 
-#rule to compile main.c into main.o
+#rule to bulid main.c into main.o
 main.o: main.c linkedlist.h
 	$(CC) $(CFLAGS) -c main.c
 
-#rule to compile linkedlist.c into linkedlist.o
+#rule to bulid darray.c into darray.o
 linkedlist.o: linkedlist.c linkedlist.h
 	$(CC) $(CFLAGS) -c linkedlist.c
 
-#clean up object files and executable
+#rule to bulid clean
 clean:
 	rm -f *.o linkedlist

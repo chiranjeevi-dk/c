@@ -61,5 +61,7 @@
     "array": "c",
     "string_view": "c",
     "initializer_list": "c"
-  }
+  },
+  "cmake.sourceDirectory": "/home/invalid/storage/coding/c/datastructures/LinkedList",
+  "sonarlint.pathToCompileCommands": "${workspaceFolder}/datastructures/LinkedList/compile_commands.json"
 }
