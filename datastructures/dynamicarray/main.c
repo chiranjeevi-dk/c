@@ -156,6 +156,43 @@ void gen_array_insert_at(darray_t *gen_array){
     }
 }
 
+void gen_array_remove_at(darray_t *gen_array){
+
+    int datatype = ret_datatype(gen_array);
+    int position;
+
+    switch(datatype){
+        case 1:
+            printf("\nEnter the integer index position to be Removed : ");
+            scanf("%d",&position);
+            darray_remove_at(gen_array,position);
+            break;
+        case 2:
+            printf("\nEnter the float index position   to be Removed : ");
+            scanf("%d",&position);
+            darray_remove_at(gen_array,position);
+            break;
+        case 3:
+            printf("\nEnter the double index position  to be Removed : ");
+            scanf("%d",&position);
+            darray_remove_at(gen_array,position);
+            break;
+        case 4:
+            printf("\nEnter the char index position  to be Removed : ");
+            scanf("%d",&position);
+            darray_remove_at(gen_array,position);
+            break;
+        case 5:
+            printf("\nEnter the string index position  to be Removed : ");
+            scanf("%d",&position);
+            darray_remove_at(gen_array,position);
+            break;
+        default:
+            printf("\nEnter a valid option to append the value.\n");
+            break;
+    }
+}
+
 void gen_array_remove(darray_t *gen_array){
 
     int datatype = ret_datatype(gen_array);
@@ -208,7 +245,7 @@ int main() {
     int option;
     while (choice)
     {
-        printf("Enter the following numbers to do\n1)Create an Array,\n2)Free an Array,\n3)Print an Array,\n4)Append in an Array,\n5)Insert at particular Index in an Array.\n6)Remove an Element\n");
+        printf("Enter the following numbers to do\n1)Create an Array,\n2)Free an Array,\n3)Print an Array,\n4)Append in an Array,\n5)Insert at particular Index in an Array.\n6)Remove an Element.\n7)Remove Element at Index.");
         printf("\nEnter an option : ");
         scanf("%d",&option);
         switch (option)
@@ -244,14 +281,21 @@ int main() {
             if(gen_array != NULL){
                 gen_array_insert_at(gen_array);
             }else{
-                fprintf(stderr,"\nError : No array to append.\n");
+                fprintf(stderr,"\nError : No array to insert at desired position.\n");
             }
             break;
         case 6:
             if(gen_array != NULL){
                 gen_array_remove(gen_array);
             }else{
-                fprintf(stderr,"\nError : No array to append.\n");
+                fprintf(stderr,"\nError : No array to remove the element.\n");
+            }
+            break;
+        case 7:
+            if(gen_array != NULL){
+                gen_array_remove_at(gen_array);
+            }else{
+                fprintf(stderr,"\nError : No array to remove at specific index.\n");
             }
             break;
         default:

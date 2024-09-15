@@ -178,11 +178,7 @@ int compare(const void *a, const void *b, const int datatype){
         case 5:
             a = *(char **)a;
             b = *(char **)b;
-            if(strcmp(a,b)==0){           
-                return 0;
-            }else{
-                return 1;
-            }
+            return strcmp(a,b);
             break;
         default:
             printf("\nEnter a valid option to append the value.\n");
@@ -209,11 +205,11 @@ void darray_remove(darray_t *darray, void *element){
     if(index == -1){    
         fprintf(stderr,"Error : Element not found.");
         return;
-    }else if(index == 0){
+    }else if(index == 0 && darray->size == 1){
+        darray_free(darray);
         darray_free(darray);
         printf("\nThe desired Element has been removed.\n");
-        darray_print(darray);
-        printf("\n");
+        return;
     }else{
         void *destination = (char *)darray->data + (index * darray->element_size);
         void *target =(char *)darray->data + ((index +1 )* darray->element_size);
@@ -222,6 +218,30 @@ void darray_remove(darray_t *darray, void *element){
             and it also asks the size being shifted
         */
         memmove(destination, target, (darray->size - index-1) * darray->element_size);
+    }
+    darray->size--;
+    printf("\nThe desired Element has been removed.\n");
+    darray_print(darray);
+    printf("\n");
+}
+
+void darray_remove_at(darray_t *darray, int position){
+
+    if(position == -1){    
+        fprintf(stderr,"Error : Element not found.");
+        return;
+    }else if(position == 0 && darray->size == 1){
+        darray_free(darray);
+        printf("\nThe desired Element has been removed.\n");
+        return;
+    }else{
+        void *destination = (char *)darray->data + (position * darray->element_size);
+        void *target =(char *)darray->data + ((position +1 )* darray->element_size);
+        /*
+            Here Memmove is used to shift the elements from the source to destination
+            and it also asks the size being shifted
+        */
+        memmove(destination, target, (darray->size - position-1) * darray->element_size);
     }
     darray->size--;
     printf("\nThe desired Element has been removed.\n");
