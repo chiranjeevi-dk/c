@@ -57,10 +57,16 @@ void string_print(void *element){
 
 void darray_print(darray_t *darray){
 
-    if(darray == NULL || darray->data == NULL){
-        fprintf(stderr, "Error : Dynamic Array not initialized.");
+    if(darray == NULL){
+        fprintf(stderr, "Error: Dynamic array is NULL.\n");
         return;
     }
+
+    if(darray->data == NULL){
+        fprintf(stderr, "Error: Dynamic array data is uninitialized.\n");
+        return;
+    }
+
 
     printf("Dynamic array is :\n");
     
@@ -207,7 +213,6 @@ void darray_remove(darray_t *darray, void *element){
         return;
     }else if(index == 0 && darray->size == 1){
         darray_free(darray);
-        darray_free(darray);
         printf("\nThe desired Element has been removed.\n");
         return;
     }else{
@@ -249,3 +254,100 @@ void darray_remove_at(darray_t *darray, int position){
     printf("\n");
 }
 
+int get_int(){
+    int value;
+    char ch;
+    while(1){
+        if(scanf("%d",&value)==1){
+            if(scanf("%c", &ch)==1 && ch!='\n'){
+                fprintf(stderr, "\nError :Invalid input.Enter an Integer\n");
+                while((ch = getchar()) != '\n' && ch != EOF);
+            }else{
+                return value;
+            }
+        }else{
+            fprintf(stderr, "\nError :Invalid input. Enter an Integer.\n");
+            while((ch =getchar()) != '\n' && ch != EOF);
+        }
+    }
+}
+
+float get_float(){
+    float value;
+    char ch;
+    while(1){
+        if(scanf("%f",&value)==1){
+            if(scanf("%c", &ch)==1 && ch!='\n'){
+                fprintf(stderr, "\nError :Invalid input.Enter an Float\n");
+                while((ch = getchar()) != '\n' && ch != EOF);
+            }else{
+                return value;
+            }
+        }else{
+            fprintf(stderr, "\nError :Invalid input. Enter an Float.\n");
+            while((ch = getchar()) != '\n' && ch != EOF);
+        }
+    }
+}
+
+double get_double(){
+    double value;
+    char ch;
+    while(1){
+        if(scanf("%lf",&value)==1){
+            if(scanf("%c", &ch)==1 && ch!='\n'){
+                fprintf(stderr, "\nError :Invalid input. Enter an double.\n");
+                while((ch = getchar()) != '\n' && ch != EOF);
+            }else{
+                return value;
+            }
+        }else{
+            fprintf(stderr, "\nError :Invalid input. Enter an double.\n");
+            while((ch = getchar()) != '\n' && ch != EOF);
+        }
+    }
+}
+
+char get_char(){
+    char value;
+    char ch;
+    while(1){
+        if(scanf(" %c",&value)==1){
+            if(scanf("%c", &ch)==1 && ch!='\n'){
+                fprintf(stderr, "\nError :Invalid input. Enter an Char.\n");
+                while((ch = getchar()) != '\n' && ch != EOF);
+            }else{
+                return value;
+            }
+        }else{
+            fprintf(stderr, "\nError :Invalid input. Enter an Char.\n");
+            while((ch =getchar()) != '\n' && ch != EOF);
+        }
+    }
+}
+
+char *get_string(){
+    
+    char *buffer = (char *)malloc(100 * sizeof(char));
+    
+    if (buffer == NULL) {
+        fprintf(stderr, "Error: Memory allocation failed.\n");
+        return NULL;
+    }
+    while(1){
+        if(fgets(buffer, 100, stdin) != NULL){
+            size_t len = strlen(buffer);
+            if(len>0 && buffer[len-1]=='\n'){
+                buffer[len-1]='\0';
+            }else{
+                int c;
+                while((c=getchar())!='\n' && c!= EOF);
+            }
+            return buffer;
+        }else{
+            fprintf(stderr, "\nError :Invalid input. Enter an Char.\n");
+            int c;
+            while((c=getchar()) != '\n' && c != EOF);
+        }
+    }
+}
