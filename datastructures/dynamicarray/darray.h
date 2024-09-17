@@ -17,20 +17,24 @@ typedef struct darray
         it should also have the capacity and size so that we can easily have a track.
     */
     void **data;
-    int capacity;
-    int size;
+    size_t capacity;
+    size_t size;
     size_t element_size;
     void (*func_print)(void *element);
 
 }darray_t;
 
-darray_t *darray_create(int initial_capacity, size_t element_size, void (*func)(void *element));
+darray_t *darray_create(size_t initial_capacity, size_t element_size, void (*func)(void *element));
 void darray_free(darray_t *darray);
 void darray_append(darray_t *darray, void *element);
-void darray_insert_at(darray_t *darray, void *element, int position);
+void darray_insert_at(darray_t *darray, void *element, size_t position);
 void darray_remove(darray_t *darray, void *element);
-void darray_remove_at(darray_t *darray, int position);
+void darray_remove_at(darray_t *darray, size_t position);
+int darray_resize(darray_t *darray, size_t new_capacity);
+size_t get_size_t();
 int ret_datatype(darray_t *darray);
+void show_size(darray_t *darray);
+void show_capacity(darray_t *darray);
 int get_int();
 float get_float();
 double get_double();

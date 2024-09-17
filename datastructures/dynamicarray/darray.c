@@ -3,7 +3,7 @@
 #include <string.h>
 #include "darray.h"
 
-darray_t *darray_create(int initial_capacity, size_t element_size, void(*print_func)(void *element)){
+darray_t *darray_create(size_t initial_capacity, size_t element_size, void(*print_func)(void *element)){
     /*
         First we need to allocate memory for Dynamic Array and then
         initial capacity using element size.
@@ -32,6 +32,18 @@ void darray_free(darray_t *darray){
     if(darray != NULL){
     free(darray->data);
     free(darray);
+    }
+}
+
+void show_size(darray_t *darray){
+    if(darray != NULL){
+        printf("%zu ", darray->size);
+    }
+}
+
+void show_capacity(darray_t *darray){
+    if(darray != NULL){
+        printf("%zu ", darray->capacity);
     }
 }
 
@@ -70,7 +82,7 @@ void darray_print(darray_t *darray){
 
     printf("Dynamic array is :\n");
     
-    for(int i=0; i<darray->size; i++){
+    for(size_t i=0; i<darray->size; i++){
         void *element =(char *)darray->data + (i * darray->element_size);
         darray->func_print(element);
     }
@@ -100,14 +112,22 @@ int ret_datatype(darray_t *darray){
     return datatype;
 }
 
+int darray_resize(darray_t *darray, size_t new_capacity){
+    void **temp = realloc(darray->data, new_capacity * darray->element_size);
+        if(temp== NULL){
+            fprintf(stderr, "Error : Reallocation failed.\n");
+            //free_darray(&darray);
+            return 0;
+        }
+    darray->data = temp;
+    darray->capacity = new_capacity;
+    return 1;    
+}
+
 void darray_append(darray_t *darray, void *element){
 
     if(darray->size == darray->capacity){
-        darray->capacity *= 2;
-        darray->data = realloc(darray->data, darray->capacity * darray->element_size);
-        if(darray->data == NULL){
-            fprintf(stderr, "Error : Reallocation failed.\n");
-            //free_darray(&darray);
+        if(darray_resize(darray, darray->capacity * 2) != 1){
             return;
         }
     }
@@ -121,14 +141,10 @@ void darray_append(darray_t *darray, void *element){
     
 }
 
-void darray_insert_at(darray_t *darray, void *element, int position){
+void darray_insert_at(darray_t *darray, void *element, size_t position){
     
     if(darray->size == darray->capacity){
-        darray->capacity *= 2;
-        darray->data = realloc(darray->data, darray->capacity * darray->element_size);
-        if(darray->data == NULL){
-            fprintf(stderr, "Error : Reallocation failed.\n");
-            //free_darray(&darray);
+        if(darray_resize(darray, darray->capacity * 2) != 1){
             return;
         }
     }
@@ -199,7 +215,7 @@ void darray_remove(darray_t *darray, void *element){
     int index = -1;
     int datatype = ret_datatype(darray);
 
-    for(int i = 0; i < darray->size ; i++){
+    for(size_t i = 0; i < darray->size ; i++){
         void *temp = (char *)darray->data + (i * darray->element_size);
         int result = compare(element,temp,datatype);
 
@@ -230,7 +246,7 @@ void darray_remove(darray_t *darray, void *element){
     printf("\n");
 }
 
-void darray_remove_at(darray_t *darray, int position){
+void darray_remove_at(darray_t *darray, size_t position){
 
     if(position == -1){    
         fprintf(stderr,"Error : Element not found.");
@@ -326,28 +342,50 @@ char get_char(){
     }
 }
 
+size_t get_size_t(){
+    size_t value;
+    char ch;
+    while(1){
+        if(scanf("%zu",&value)==1){
+            if(scanf("%c", &ch)==1 && ch!='\n'){
+                fprintf(stderr, "\nError :Invalid input.Enter an Integer\n");
+                while((ch = getchar()) != '\n' && ch != EOF);
+            }else{
+                return value;
+            }
+        }else{
+            fprintf(stderr, "\nError :Invalid input. Enter an Integer.\n");
+            while((ch =getchar()) != '\n' && ch != EOF);
+        }
+    }
+}
+
+
 char *get_string(){
-    
     char *buffer = (char *)malloc(100 * sizeof(char));
     
     if (buffer == NULL) {
         fprintf(stderr, "Error: Memory allocation failed.\n");
         return NULL;
     }
+    
     while(1){
         if(fgets(buffer, 100, stdin) != NULL){
             size_t len = strlen(buffer);
-            if(len>0 && buffer[len-1]=='\n'){
-                buffer[len-1]='\0';
+            if(len > 0 && buffer[len-1] == '\n'){
+                buffer[len-1] = '\0';  // Remove newline
             }else{
+                // Clear the buffer in case the input was too long
                 int c;
-                while((c=getchar())!='\n' && c!= EOF);
+                while((c = getchar()) != '\n' && c != EOF);
             }
             return buffer;
-        }else{
-            fprintf(stderr, "\nError :Invalid input. Enter an Char.\n");
+        } else {
+            fprintf(stderr, "\nError: Invalid input.\n");
             int c;
-            while((c=getchar()) != '\n' && c != EOF);
+            // Clear the buffer before retrying
+            while((c = getchar()) != '\n' && c != EOF);
         }
     }
 }
+
