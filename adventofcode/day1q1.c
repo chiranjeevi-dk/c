@@ -24,7 +24,6 @@ int number(char *line, size_t length) {
                 secondnum = current_num;
             }
         }
-
     }
     int number;
     if(secondnum == -1){
@@ -42,7 +41,7 @@ int main() {
     size_t len = 0;
     ssize_t read;
 
-    fptr = fopen("input.txt", "r");
+    fptr = fopen("input1.txt", "r");
     if (fptr == NULL) {
         perror("Unable to open file!");
         exit(EXIT_FAILURE);
