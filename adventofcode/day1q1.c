@@ -41,7 +41,7 @@ int main() {
     size_t len = 0;
     ssize_t read;
 
-    fptr = fopen("input1.txt", "r");
+    fptr = fopen("/home/invalid/storage/coding/c/adventofcode/input1.txt", "r");
     if (fptr == NULL) {
         perror("Unable to open file!");
         exit(EXIT_FAILURE);
